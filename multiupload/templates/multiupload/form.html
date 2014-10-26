@@ -1,0 +1,150 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The Form</title>
+    <meta name="description" content="An sample web app that uploads images using the jquery-file-upload plugin. This app uses Django in the backend, and AngularJS in the frontend.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="{% static 'multiupload/css/style.css' %}">
+    <!-- blueimp Gallery styles -->
+    <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="{% static 'multiupload/css/jquery.fileupload.css' %}">
+    <link rel="stylesheet" href="{% static 'multiupload/css/jquery.fileupload-ui.css' %}">
+    <!-- CSS adjustments for browsers with JavaScript disabled -->
+    <noscript><link rel="stylesheet" href="{% static 'multiupload/css/jquery.fileupload-noscript.css' %}"></noscript>
+    <noscript><link rel="stylesheet" href="{% static 'multiupload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
+    
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'multiupload/css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'multiupload/css/index.css' %}">
+    <style>
+    /* Hide Angular JS elements before initializing */
+    .ng-cloak {
+        display: none;
+    }
+    </style>
+    
+  </head>
+
+  <body>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2"></div>
+        
+        <div class="col-md-8">
+          <form action="{% url 'multi:upload' %}" method="POST" enctype="multipart/form-data" ng-app="imgApp" ng-controller="imgUploadController" file-upload="uploadOptions">
+            {% csrf_token %}
+            
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title h3-text text-center">Upload some files!!</h3>
+              </div>
+              <div class="panel-body">
+                <div class="text-center">
+                  <button class="btn btn-default btn-lg" id="thefilesBrowse">Browse</button>
+                  <input type="file" name="thefiles" id="thefiles" multiple>
+                  <button type="button" class="btn btn-primary btn-lg" ng-click="submit()" ng-disabled="uploadingFinished">Submit</button>
+                  <button type="button" class="btn btn-warning btn-lg" ng-click="cancel()" ng-disabled="uploadingFinished">Cancel</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Panel to view all the pictures. -->
+            <div class="text-center ng-cloak" ng-show="uploadingFinished">
+              <a href="/view/" class="btn btn-success btn-lg btn-bllock">View your uploaded Images!</a>
+            </div>
+            
+            <!-- The global progress state -->
+            <div class="fade" data-ng-class="{in: active()}">
+              <!-- The global progress bar -->
+              <div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+              <!-- The extended global progress state -->
+              <div class="progress-extended">&nbsp;</div>
+            </div>
+            
+            
+            {% verbatim %}
+              <!-- The table listing the files available for upload/download -->
+            <div class="">
+            <table class="table table-striped tableWrapper files ng-cloak">
+                <tr data-ng-repeat="file in queue" data-ng-class="{'processing': file.$processing()}">
+                
+                  <td data-ng-switch data-on="!!file.thumbnailUrl">
+                    <div class="preview" data-ng-switch-when="true">
+                      <a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery><img data-ng-src="{{file.thumbnailUrl}}" alt="" width="80"></a>
+                    </div>
+                    <div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
+                  </td>
+                  
+                  <td>
+                    <p class="name" data-ng-switch data-on="!!file.url">    
+                      <span data-ng-switch-when="true" data-ng-switch data-on="!!file.thumbnailUrl">
+                        <a data-ng-switch-when="true" data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery>{{file.name}}</a>
+                        <a data-ng-switch-default data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
+                      </span>
+                      <span data-ng-switch-default>{{file.name}}</span>
+                    </p>
+                    <strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+                  </td>
+                  
+                  <td>
+                    <p class="size">{{file.size | formatFileSize}}</p>
+                    <div class="progress progress-striped active fade" data-ng-class="{pending: 'in'}[file.$state()]" data-file-upload-progress="file.$progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+                  </td>
+                  
+                  <td>
+                    <button type="button" class="btn btn-primary start" data-ng-click="file.$submit()" data-ng-hide="!file.$submit || options.autoUpload" data-ng-disabled="file.$state() == 'pending' || file.$state() == 'rejected'">
+                      <i class="glyphicon glyphicon-upload"></i>
+                      <span>Start</span>
+                    </button>
+                    <button type="button" class="btn btn-warning cancel" data-ng-click="file.$cancel()" data-ng-hide="!file.$cancel">
+                      <i class="glyphicon glyphicon-ban-circle"></i>
+                      <span>Cancel</span>
+                    </button>
+                    <button data-ng-controller="FileDestroyController" type="button" class="btn btn-danger destroy" data-ng-click="file.$destroy()" data-ng-hide="!file.$destroy">
+                      <i class="glyphicon glyphicon-trash"></i>
+                      <span>Delete</span>
+                    </button>
+                  </td>
+                  
+                </tr>
+            </table>
+            </div> <!-- /.tableWrapper -->
+            {% endverbatim %}
+          </form>
+        </div>
+        
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+      
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/vendor/jquery.ui.widget.js' %}"></script>
+    <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.iframe-transport.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-process.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-image.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-audio.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-video.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-validate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-angular.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/app.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/index.js' %}"></script>
+    
+
+  </body>
+</html>
