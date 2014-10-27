@@ -1,0 +1,33 @@
+
+#imgViewApp {
+  
+}
+
+#imgViewApp ul li {
+  display: inline-block;
+  margin: 10px;
+}
+
+
+
+.inline-image-panel {
+  display: inline-block;
+}
+
+.inline-image-panel .panel-title {
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.inline-image-panel .panel-body {
+  padding: 15px 30px;
+}
+
+.inline-image-panel .panel-footer {
+  padding: 4px 15px;
+}
+
+.img-loading {
+  background: url("/img/loading.gif") no-repeat 50% 50%;
+  /*background-image: url("/static/multiupload/img/loading.gif");*/
+}

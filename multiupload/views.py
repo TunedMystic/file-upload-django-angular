@@ -15,23 +15,17 @@ def handleUpload(request):
     # Get the uploaded file.
     f = request.FILES["thefiles"]
     # Replace any whitespaces with underscores.
-    f.name = f.name.replace(" ", "_")
+    f.name = Image.unscorize(f.name)
     
     # Instantiate an Image object with the uploaded file.
     imgFile = Image(img = f, name = f.name, contentType = f.content_type, imgHash = Image.getHash())
     imgFile.save()
     
     # Create a JSON response (for Jquery File Upload).
-    res = {}
-    res["name"] = imgFile.name
-    res["size"] = imgFile.img.size
-    res["deleteType"] = "POST"
-    res["url"] = imgFile.img.url
-    res["thumbnailUrl"] = imgFile.img.url
-    res["deleteUrl"] = "/delete/" + str(imgFile.imgHash) + "/"
     res = {
-      "files": [res]
-    };
+      "files": []
+    }
+    res["files"].append(imgFile.toObj())
     
     jsonResponse = json.dumps(res)
     print "\n\n"
@@ -62,5 +56,26 @@ def handleDelete(request, hash):
   jsonResponse = json.dumps(res)
   
   return HttpResponse(jsonResponse, content_type = "application/json")
+
+
+
+# NOTE: Make this ONLY POST requests.
+def returnImagesJSON(request):
+  """
+  Return JSON data for all objects loaded. This way,
+  AngularJS can construct the template on the front-end for us.
+  """
   
+  limit = 10
+  
+  ImageData = {
+    "files": []
+  }
+  # Limit the results to 50 Images.
+  for img in Image.objects.all()[:limit]:
+    ImageData["files"].append(img.toObj())
+  
+  jsonResponse = json.dumps(ImageData)
+  
+  return HttpResponse(jsonResponse, content_type = "application/json")
   

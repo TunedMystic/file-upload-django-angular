@@ -1,0 +1,96 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The Form</title>
+    <meta name="description" content="An sample web app that uploads images using the jquery-file-upload plugin. This app uses Django in the backend, and AngularJS in the frontend.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- blueimp Gallery styles -->
+    <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+    <!-- Specific page styles -->
+    <link rel="stylesheet" href="{% static 'multiupload/css/view.css' %}">
+    <style>
+    /* Hide Angular JS elements before initializing */
+    .ng-cloak {
+        display: none;
+    }
+    </style>
+    
+  </head>
+
+  <body>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-md-1"></div>
+        
+        <div class="col-md-10">
+          
+          {% verbatim %}
+
+          <div id="imgViewApp" ng-app="imgViewApp" ng-controller="ImageViewController">
+            
+            <ul class="list-unstyled" ng-show="images.length">
+              
+              <li ng-repeat="image in images">
+                <div class="panel panel-default inline-image-panel">
+                  <div class="panel-heading">
+                    
+                    <!-- Image Panel Header -->
+                    <h3 class="panel-title">
+                      <a ng-href="{{ image.url }}" target="_blank">
+                        {{ image.name }}
+                      </a>
+                    </h3>
+                    
+                    <button type="button" class="close" ng-click="deleteImage($index)">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  
+                  <!-- Image Panel Body -->
+                  <div class="panel-body text-center">
+                    <a ng-href="{{ image.url }}" target="_blank">
+                      <img ng-src="{{ image.url }}" width="150px">
+                    </a>
+                  </div>
+                  
+                  <!-- Image Panel Footer -->
+                  <div class="panel-footer text-center">
+                    <h5>Added on: <small>{{ image.dateAdded }}</small></h5>
+                  </div>
+                </div> <!-- /.panel -->
+              </li>
+              
+            </ul>
+            
+          </div>  <!-- /.ng-app -->
+          {% endverbatim %}
+          
+          
+        </div>
+        
+        <div class="col-md-1"></div>
+      </div>
+    </div>
+      
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script-->
+    <script type="text/javascript" src="{% static 'multiupload/js/angular.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/angular-cookies.js' %}"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-angular.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/viewApp.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/view.js' %}"></script>
+    
+
+  </body>
+</html>
