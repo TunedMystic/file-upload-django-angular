@@ -1,8 +1,14 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en">`  
   <head>
+    
+    <!--
+    AngularJS, Django, and Jquery File-upload App.
+                Sandeep Jadoonanan
+    -->
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>The Form</title>
@@ -15,6 +21,8 @@
     <link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <!-- Specific page styles -->
     <link rel="stylesheet" href="{% static 'multiupload/css/view.css' %}">
+    <link rel="stylesheet" href="{% static 'multiupload/css/site.css' %}">  
+      
     <style>
     /* Hide Angular JS elements before initializing */
     .ng-cloak {
@@ -26,6 +34,32 @@
 
   <body>
     
+    <div class="navbar-wrapper">
+      <div class="container">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">AngularJS,&nbsp;&nbsp;&nbsp;Django,&nbsp;&nbsp;&nbsp;Jquery-file-upload</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li class=""><a href="/">Upload some images!</a></li>
+                <li class="active"><a href="/view/">View uploaded images</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="spacer-lg"></div>
+    
     <div class="container">
       <div class="row">
         <div class="col-md-1"></div>
@@ -33,9 +67,12 @@
         <div class="col-md-10">
           
           {% verbatim %}
-
-          <div id="imgViewApp" ng-app="imgViewApp" ng-controller="ImageViewController">
             
+           
+          <div id="imgViewApp" ng-app="imgViewApp" ng-controller="ImageViewController">   
+              
+             
+            <!-- Display the ul while there are images -->
             <ul class="list-unstyled" ng-show="images.length">
               
               <li ng-repeat="image in images">
@@ -70,6 +107,13 @@
               
             </ul>
             
+            <!-- Display this div when there are no images -->
+            <div class="jumbotron" ng-hide="occupied">
+              <h1>Want to see more images?</h1>
+              <p>...</p>  
+              <p><a class="btn btn-primary btn-lg" role="button" href="/view/">Refresh the page!</a></p>
+            </div>
+            
           </div>  <!-- /.ng-app -->
           {% endverbatim %}
           
@@ -78,7 +122,13 @@
         
         <div class="col-md-1"></div>
       </div>
-    </div>
+      
+      
+      <footer class="text-center">
+        <p class="light-grey">&copy; 2014 Sandeep Jadoonanan</p>
+      </footer>
+      
+    </div> <!-- ./container -->
       
     
     
@@ -86,11 +136,11 @@
     <!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.js"></script-->
     <script type="text/javascript" src="{% static 'multiupload/js/angular.js' %}"></script>
     <script type="text/javascript" src="{% static 'multiupload/js/angular-cookies.js' %}"></script>
+    <script type="text/javascript" src="{% static 'multiupload/js/angular-animate.min.js' %}"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{% static 'multiupload/js/jquery.fileupload-angular.js' %}"></script>
     <script type="text/javascript" src="{% static 'multiupload/js/viewApp.js' %}"></script>
     <script type="text/javascript" src="{% static 'multiupload/js/view.js' %}"></script>
-    
-
+     
   </body>
 </html>

@@ -1,5 +1,13 @@
+/*
+    AngularJS, Django, and Jquery File-upload App.
+                Sandeep Jadoonanan
+*/
 
 (function() {
+  /*
+    This app provides an interface to upload Images to the server.
+  */
+  
   var app = angular.module("imgApp", ["blueimp.fileupload"]);
   
   app.controller("imgUploadController", ["$scope", function($scope) {
@@ -39,24 +47,16 @@
       
     });
     
-    // NOTE: Get rid of this hack when you're done!!
-    window.ss = $scope;
-    
   }]);
   
   app.controller("FileDestroyController", ["$scope", "$http", function($scope, $http) {
     
-    $scope.$state = function() {
-    }
+    $scope.$state = function() {}
     
-    $scope.$destroy = function() { 
-    }
+    $scope.$destroy = function() {}
     
-    $scope.$cancel = function() { 
-    }
+    $scope.$cancel = function() {}
     
   }]);
   
 })();
-    
-      

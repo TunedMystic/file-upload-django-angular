@@ -1,3 +1,8 @@
+"""
+    AngularJS, Django, and Jquery File-upload App.
+                Sandeep Jadoonanan
+"""
+
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.conf import settings
@@ -7,7 +12,7 @@ import uuid
 
 from .models import Image
 
-# Create your views here.
+
 def handleUpload(request):
   # This view accepts only POST methods.
   if request.method == "POST":
@@ -28,14 +33,11 @@ def handleUpload(request):
     res["files"].append(imgFile.toObj())
     
     jsonResponse = json.dumps(res)
-    print "\n\n"
-    print json.dumps(res, indent = 2)
-    print "\n\n"
     
     return HttpResponse(jsonResponse, content_type = "application/json")
     
   else:
-    return HttpResponseBadRequest("Only POST requests man!!", content_type = "application/json")
+    return HttpResponseBadRequest("Only POST requests are allowed!", content_type = "application/json")
    
   raise Http404
 
@@ -65,17 +67,24 @@ def returnImagesJSON(request):
   Return JSON data for all objects loaded. This way,
   AngularJS can construct the template on the front-end for us.
   """
-  
-  limit = 10
-  
-  ImageData = {
-    "files": []
-  }
-  # Limit the results to 50 Images.
-  for img in Image.objects.all()[:limit]:
-    ImageData["files"].append(img.toObj())
-  
-  jsonResponse = json.dumps(ImageData)
-  
-  return HttpResponse(jsonResponse, content_type = "application/json")
+  # This view accepts only POST methods.
+  if request.method == "POST":
+     
+    limit = 12
+     
+    ImageData = {
+      "files": []
+    }
+    # Limit the results to 50 Images.
+    for img in Image.objects.all()[:limit]:
+      ImageData["files"].append(img.toObj())
+     
+    jsonResponse = json.dumps(ImageData)
+     
+    return HttpResponse(jsonResponse, content_type = "application/json")
+   
+  else:
+    return HttpResponseBadRequest("Only POST requests are allowed!", content_type = "application/json")
+   
+  raise Http404
   

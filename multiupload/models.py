@@ -1,3 +1,8 @@
+"""
+    AngularJS, Django, and Jquery File-upload App.
+                Sandeep Jadoonanan
+"""
+
 from django.db import models
 import uuid, os
 
@@ -16,7 +21,7 @@ class Image(models.Model):
   # A randomly generated hash (used for deleting the Image).
   imgHash = models.CharField(max_length = 17, unique = True)
   # Automatically set the field to 'now' when the object is created.
-  dateAdded = models.DateField(auto_now_add = True)
+  dateAdded = models.DateTimeField(auto_now_add = True)
    
    
   def __str__(self):

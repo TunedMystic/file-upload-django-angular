@@ -55,8 +55,8 @@ target/
 
 
 # DJango project
-*.sqlite3
-media/
+#*.sqlite3
+#media/
 r
 rr
 m

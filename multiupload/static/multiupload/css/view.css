@@ -1,3 +1,7 @@
+/*
+    AngularJS, Django, and Jquery File-upload App.
+                Sandeep Jadoonanan
+*/
 
 #imgViewApp {
   
@@ -7,8 +11,6 @@
   display: inline-block;
   margin: 10px;
 }
-
-
 
 .inline-image-panel {
   display: inline-block;
@@ -29,5 +31,26 @@
 
 .img-loading {
   background: url("/img/loading.gif") no-repeat 50% 50%;
-  /*background-image: url("/static/multiupload/img/loading.gif");*/
 }
+
+/* --------------- Styles for 'ngAnimate' ---------------- */
+.ng-enter {
+  -webkit-transition: .1s;
+  transition: .1s;
+  opacity:0;
+}
+
+.ng-enter-active {
+  opacity:1;
+}
+
+.ng-leave {
+  -webkit-transition: .5s;
+  transition: .5s;
+}
+
+.ng-leave-active  {
+  opacity:0;
+}
+/* -------------- / Styles for 'ngAnimate' --------------- */
+
