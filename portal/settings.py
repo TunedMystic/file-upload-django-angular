@@ -36,7 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "multiupload"
+    'debug_toolbar.apps.DebugToolbarConfig',
+	"django_extensions",
+    "multiupload",
 )
 
 MIDDLEWARE_CLASSES = (
