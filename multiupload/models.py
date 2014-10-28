@@ -4,6 +4,8 @@
 """
 
 from django.db import models
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 import uuid, os
 
 
@@ -22,6 +24,12 @@ class Image(models.Model):
   imgHash = models.CharField(max_length = 17, unique = True)
   # Automatically set the field to 'now' when the object is created.
   dateAdded = models.DateTimeField(auto_now_add = True)
+  # Thumbnail for the picture.
+  thumbnail = ImageSpecField(source = "img",
+                             processors = [ResizeToFill(150, 150)],
+                             format = "JPEG",
+                             options = {"quality": 80})
+  
    
    
   def __str__(self):
@@ -36,7 +44,7 @@ class Image(models.Model):
     obj["name"] = Image.descorize(self.name)
     obj["size"] = Image.getSize(self.img.size)
     obj["url"] = self.img.url
-    obj["thumbnailUrl"] = self.img.url
+    obj["thumbnailUrl"] = self.thumbnail.url
     obj["deleteUrl"] = "/delete/" + str(self.imgHash) + "/"
     obj["deleteType"] = "POST"
     obj["contentType"] = self.contentType
