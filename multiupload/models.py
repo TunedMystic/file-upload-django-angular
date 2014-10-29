@@ -15,7 +15,7 @@ class Image(models.Model):
   """
   
   # The image file.
-  img = models.ImageField(upload_to = "sandeep/uploaded_img")
+  img = models.ImageField(upload_to = "uploaded_img")
   # Name of the file.
   name = models.CharField(max_length = 200)
   # Content-type of the file.
