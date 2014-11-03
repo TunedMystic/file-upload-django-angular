@@ -26,10 +26,16 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DEFAULT_FILE_STORAGE = "portal.s3utils.MediaRootS3BotoStorage"
-AWS_ACCESS_KEY_ID = "********************"
-AWS_SECRET_ACCESS_KEY = "****************************************"
-AWS_STORAGE_BUCKET_NAME = "minidjangoproject"
+USE_S3 = False
+
+if USE_S3:
+  DEFAULT_FILE_STORAGE = "portal.s3utils.MediaRootS3BotoStorage"
+  AWS_ACCESS_KEY_ID = "********************"
+  AWS_SECRET_ACCESS_KEY = "****************************************"
+  AWS_STORAGE_BUCKET_NAME = "minidjangoproject"
+
+# Create cached images as soon as the Image (model) is instantiated.
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = "imagekit.cachefiles.strategies.Optimistic"
 
 # Application definition
 
@@ -92,6 +98,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_URL = "/media/"
-#MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, "media"))
-MEDIA_subROOT = os.path.abspath(os.path.join(BASE_DIR, "sandeep"))
-MEDIA_ROOT = os.path.abspath(os.path.join(MEDIA_subROOT, "media"))
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, "media"))
+#MEDIA_subROOT = os.path.abspath(os.path.join(BASE_DIR, "sandeep"))
+#MEDIA_ROOT = os.path.abspath(os.path.join(MEDIA_subROOT, "media"))

@@ -75,9 +75,9 @@ def returnImagesJSON(request):
     ImageData = {
       "files": []
     }
-    # Limit the results to 50 Images.
+    # Limit the results to 'x' amount of Images.
     for img in Image.objects.all()[:limit]:
-      ImageData["files"].append(img.toObj())
+      ImageData["files"].append(img.toObj(True))
      
     jsonResponse = json.dumps(ImageData)
      

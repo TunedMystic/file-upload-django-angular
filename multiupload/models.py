@@ -36,7 +36,7 @@ class Image(models.Model):
     return "%s" % (self.name)
    
    
-  def toObj(self):
+  def toObj(self, explicit = False):
     """
     Get data for this Image in a standard Python dictionary.
     """
@@ -44,7 +44,10 @@ class Image(models.Model):
     obj["name"] = Image.descorize(self.name)
     obj["size"] = Image.getSize(self.img.size)
     obj["url"] = self.img.url
-    obj["thumbnailUrl"] = self.thumbnail.url
+    if explicit:
+      obj["thumbnailUrl"] = self.thumbnail.url
+    else:
+      obj["thumbnailUrl"] = self.img.url
     obj["deleteUrl"] = "/delete/" + str(self.imgHash) + "/"
     obj["deleteType"] = "POST"
     obj["contentType"] = self.contentType
