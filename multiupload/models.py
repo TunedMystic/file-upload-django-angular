@@ -6,7 +6,7 @@
 from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-import uuid, os
+import uuid
 
 
 class Image(models.Model):

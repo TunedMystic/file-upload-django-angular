@@ -17,12 +17,12 @@ urlpatterns = patterns("",
   url(r"^view/$", TemplateView.as_view(template_name = "multiupload/view.html"), name = "view"),
   
   # Upload a picture.
-  url(r"^upload/$", views.handleUpload, name = "upload"),
+  url(r"^upload/$", views.HandleUpload.as_view(), name = "upload"),
   
   # Delete a picture.
-  url(r"^delete/(?P<hash>\w+)/$", views.handleDelete, name = "delete"),
+  url(r"^delete/(?P<hash>\w+)/$", views.HandleDelete.as_view(), name = "delete"),
   
   # Get JSON info for all Images.
-  url(r"^93ec8e6b7a146f7d/$", views.returnImagesJSON, name = "ImagesJSON"),
+  url(r"^93ec8e6b7a146f7d/$", views.ImagesJSON.as_view(), name = "Images_JSON"),
   
 )
